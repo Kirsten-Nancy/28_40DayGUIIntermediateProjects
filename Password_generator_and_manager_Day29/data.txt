@@ -1,2 +1,4 @@
 Website    | Email\Username  | password
 
+ netflix  | user@gmail.com | 12456
+ udemy  | user@gmail.com | 12345
