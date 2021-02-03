@@ -1,9 +1,14 @@
 import requests
+import smtplib
+import config
 
-API_KEY = "API_KEY"
+sender_email = config.sender_email
+password = config.sender_password
+
+API_KEY = config.OWM_API_KEY
 parameters = {
-    "lat": 45.774460,
-    "lon": 126.676743,
+    "lat": -6.175110,
+    "lon": 106.865036,
     "exclude": "current,minutely,daily",
     "units": "metric",
     "appid": API_KEY
@@ -18,7 +23,11 @@ weather_data_list_ids = [response.json()["hourly"][i]["weather"][0]["id"] for i 
 
 for i in range(len(list_12_hours)):
     weather_data_id = weather_data["hourly"][i]["weather"][0]["id"]
-    print(weather_data_id)
     if weather_data_id < 700:
-        print("Bring an umbrella")
+        with smtplib.SMTP("smtp.gmail.com", port=587) as connection:
+            connection.starttls()
+            connection.login(user=sender_email, password=password)
+            connection.sendmail(from_addr=sender_email,
+                                to_addrs=config.receiver_email,
+                                msg=f"Subject:Quote of the day \n\nBring an umbrella, it will rain later today")
         break

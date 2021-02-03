@@ -2,6 +2,7 @@ import pandas
 import random
 import smtplib
 import datetime as dt
+import config
 
 now = dt.datetime.now()
 day = now.day
@@ -19,8 +20,8 @@ for index, row in birthdays.iterrows():
             bday_wish = data.replace('[NAME]', name)
             # print(bday_wish)
 
-        sender_email = "sender@gmail.com"
-        password = "password"
+        sender_email = config.sender_email
+        password = config.sender_password
 
         with smtplib.SMTP("smtp.gmail.com", port=587) as connection:
             connection.starttls()
