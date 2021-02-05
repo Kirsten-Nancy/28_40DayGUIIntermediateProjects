@@ -1,35 +1,42 @@
 from tkinter import *
-from question_model import Question
-from data import question_data
-from quiz_brain import QuizBrain
+import data
 
 THEME_COLOR = "#350b40"
-
-question_bank = []
-for question in question_data:
-    question_text = question["question"]
-    question_answer = question["correct_answer"]
-    new_question = Question(question_text, question_answer)
-    question_bank.append(new_question)
-
-
-quiz = QuizBrain(question_bank)
-
 
 class HomePage:
     def __init__(self, master):
         self.master = master
         self.master.title("Home")
+        self.master.configure(padx=100, pady=100)
+        self.choice_label = Label(text="Choose a label")
+        self.choice_label.grid(row=0, column=0)
+        self.selected = None
+
+        self.OPTIONS = data.list_names
+        self.selected_category = StringVar(self.master)
+        self.selected_category.set(self.OPTIONS[0])
+
+        self.drop_down = OptionMenu(self.master, self.selected_category, *self.OPTIONS)
+        self.drop_down.grid(row=1, column=0)
+
         self.quiz_btn = Button(self.master, text="Open Quiz", command=self.open_quiz_window)
-        self.quiz_btn.grid(row=0, column=0)
+        self.quiz_btn.grid(row=2, column=0)
+
+    def show(self):
+        self.selected = self.selected_category.get()
+        my_label = Label(self.master, text=self.selected).grid(row=3, column=0)
+        data.get_category(self.selected)
 
     def open_quiz_window(self):
+        self.show()
         quiz_window = Toplevel(self.master)
         app = QuizUI(quiz_window)
 
+
+
 class QuizUI:
     def __init__(self, master):
-        self.quiz_brain = quiz
+        self.quiz_brain = data.quiz
 
         self.master = master
         self.master.title("QUIZ APP")
@@ -44,11 +51,13 @@ class QuizUI:
         self.canvas.grid(row=1, column=0, columnspan=2, pady=50)
 
         self.right_btn_img = PhotoImage(file="images/true.png")
-        self.right_btn = Button(self.master, image=self.right_btn_img, highlightthickness=0, command=self.right_answer, bd=0)
+        self.right_btn = Button(self.master, image=self.right_btn_img, highlightthickness=0,
+                                command=self.right_answer, bd=0)
         self.right_btn.grid(row=2, column=0)
 
         self.wrong_btn_img = PhotoImage(file="images/false.png")
-        self.wrong_btn = Button(self.master, image=self.wrong_btn_img, highlightthickness=0, command=self.wrong_answer, bd=0)
+        self.wrong_btn = Button(self.master, image=self.wrong_btn_img, highlightthickness=0,
+                                command=self.wrong_answer, bd=0)
         self.wrong_btn.grid(row=2, column=1)
 
         self.get_next_question()
