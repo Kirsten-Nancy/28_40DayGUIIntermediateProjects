@@ -1,3 +1,3 @@
 # GUIIntermediateProjects
 ## DAY28:Pomodoro App
-![](https://media.giphy.com/media/lHnNe2dGSUktR8JQ3z/giphy.gif)
+![Pomodoro App](https://github.com/Kirsten-Nancy/28_40DayGUIIntermediateProjects/tree/main/images/pomodoro-work.png?raw=true "Pomodoro App")
